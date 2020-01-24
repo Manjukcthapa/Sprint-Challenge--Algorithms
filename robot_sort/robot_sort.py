@@ -1,3 +1,11 @@
+# Creating robert sort
+# It can move left or right.
+# It can pick up an item
+# If it tries to pick up an item while already holding one, it will swap the items instead.
+# It can compare the item it's holding to the item in front of it.
+# It can switch a light on its head on or off.
+
+
 class SortingRobot:
     def __init__(self, l):
         """
@@ -92,21 +100,72 @@ class SortingRobot:
         """
         return self._light == "ON"
 
+
+ # Use the robot's light as a boolean to control our loop.
+# When the light is on the robot is moving right.
+# As robot moves right we compare items and swap if item is smaller.
+# When the light is off the robot will move left back to the starting position.
+
     def sort(self):
         """
         Sort the robot's list.
         """
         # Fill this out
-        pass
+
+        while self.light_is_on() == False:
+            # Setting light to true so when array is finished sorting will end the loop
+            self.set_light_on()
+
+            while self.can_move_right():
+                # swap item first then move right
+                self.swap_item()
+                self.move_right()
+                # If item held is greater in value then lets swap
+                if self.compare_item() == 1:
+                    # Greater value so swap and place lower to 
+                    # left and place higher number in that position
+                    self.swap_item()
+                    self.move_left()
+                    self.swap_item()
+                    self.move_right()
+                    # Turning lights off because we need will have to restart loop
+                    self.set_light_off()
+                else:
+                    # If smaller then place held item to the left
+                    self.move_left()
+                    self.swap_item()
+                    self.move_right()
+
+            while self.can_move_left():
+                self.move_left()
+                  
+       
 
 
 if __name__ == "__main__":
     # Test our your implementation from the command line
     # with `python robot_sort.py`
-
     l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78, 14, 35, 90, 54, 5, 0, 87, 82, 96, 43, 92, 62, 97, 69, 94, 99, 93, 76, 47, 2, 88, 51, 40, 95, 6, 23, 81, 30, 19, 25, 91, 18, 68, 71, 9, 66, 1, 45, 33, 3, 72, 16, 85, 27, 59, 64, 39, 32, 24, 38, 84, 44, 80, 11, 73, 42, 20, 10, 29, 22, 98, 17, 48, 52, 67, 53, 74, 77, 37, 63, 31, 7, 75, 36, 89, 70, 34, 79, 83, 13, 57, 86, 12, 56, 50, 55, 46]
 
     robot = SortingRobot(l)
 
     robot.sort()
     print(robot._list)
+
+#---------------------------------------------------#
+# Robot Sort sounds similar to bubble sort
+# def bubble_sort( arr ):
+#     for i in range(0, len(arr) - 1):
+#         for x in range(0, len(arr) - 1 - i):
+#             if arr[x] > arr[x + 1]:
+#                 arr[x], arr[x + 1] = arr[x + 1], arr[x]
+
+#     return arr
+# a = [6,8,1,3,0,5]
+# 0 - 6<8 (no swap) - [6,8,1,3,0,5]
+#1 - 8>1 (swap) - [6,1,8,3,0,5]
+#2 - 8>3 (swap) - [6,1,3,8,0,5]
+#3 - 8>0 (swap) - [6,1,3,0,8,5]
+#4 - 8>5 (swap) - [6,1,3,0,5,8]
+#8 is in its correct place
+#so on
